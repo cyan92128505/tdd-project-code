@@ -1,15 +1,15 @@
-package main
+package tdd
 
 import (
 	"testing"
 )
 
 func TestMultiplication(t *testing.T) {
-	fiver := Doller{
+	fiver := Dollar{
 		amount: 5,
 	}
 
-	tenner := fiver.Timer(2)
+	tenner := fiver.Times(2)
 	if tenner.amount != 10 {
 		t.Errorf("Expected 10, got:[%d]", tenner.amount)
 	}
