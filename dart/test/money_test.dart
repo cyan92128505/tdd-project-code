@@ -8,4 +8,13 @@ void main() {
 
     expect(tenner.amount, 10);
   });
+
+
+  test('10 EUR x 2 = 20 EUR', () {
+    var tenEUR = new Money(10, 'EUR');
+    var twentyEUR = tenEUR.times(2);
+
+    expect(twentyEUR.amount, 20);
+    expect(twentyEUR.currency, 'EUR');
+  });
 }

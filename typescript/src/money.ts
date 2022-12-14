@@ -1,4 +1,4 @@
-class Dollar {
+export class Dollar {
     amount: number;
 
     constructor(amount: number) {
@@ -10,4 +10,17 @@ class Dollar {
     }
 }
 
-export default Dollar;
+export class Money {
+    amount: number;
+    currency: string;
+
+    constructor(amount: number, currency: string) {
+        this.amount = amount;
+        this.currency = currency;
+    }
+
+    times(multiplier: number): Money {
+        return new Money(this.amount * multiplier, this.currency);
+    }
+
+}

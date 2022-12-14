@@ -14,3 +14,16 @@ func TestMultiplication(t *testing.T) {
 		t.Errorf("Expected 10, got:[%d]", tenner.amount)
 	}
 }
+
+func TestMultiplicationInEuros(t *testing.T) {
+	tenEuros := Money{amount: 10, currency: "EUR"}
+	twentyEuros := tenEuros.Times(2)
+
+	if twentyEuros.amount != 20 {
+		t.Errorf("Expected 20, got: [%d]", twentyEuros.amount)
+	}
+
+	if twentyEuros.currency != "EUR" {
+		t.Errorf("Expected EUR, got: [%s]", twentyEuros.currency)
+	}
+}
