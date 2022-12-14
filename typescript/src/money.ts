@@ -11,4 +11,7 @@ export class Money {
         return new Money(this.amount * multiplier, this.currency);
     }
 
+    divide(divisor: number): Money {
+        return new Money(this.amount / divisor, this.currency);
+    }
 }

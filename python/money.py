@@ -5,3 +5,6 @@ class Money:
 
     def times(self, multiplier):
         return Money(self.amount * multiplier, self.currency)
+
+    def divide(self, divisor):
+        return Money(self.amount / divisor, self.currency)

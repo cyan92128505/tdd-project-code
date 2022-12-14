@@ -19,3 +19,12 @@ test('10 EUR * 2 = 20 EUR', () => {
     expect(twentyEuros.amount).toBe(20);
     expect(twentyEuros.currency).toBe('EUR');
 })
+
+test('4002 KRW / 4 = 1000.5 KRW', () => {
+    const originMoney = new Money(4002, 'KRW');
+
+    const actualMoneyAfterDivision = originMoney.divide(4);
+    const expectedMoneyAfterDivision = new Money(1000.5, 'KRW');
+
+    expect(actualMoneyAfterDivision).toEqual(expectedMoneyAfterDivision);
+})
