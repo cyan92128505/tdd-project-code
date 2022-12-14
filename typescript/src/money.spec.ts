@@ -1,14 +1,14 @@
 import {
-    Dollar,
     Money
 } from "./money";
 
 test('5 x 2 = 10', () => {
 
-    const fiver = new Dollar(5);
+    const fiver = new Money(5, 'USD');
     const tenner = fiver.times(2);
 
     expect(tenner.amount).toBe(10);
+    expect(tenner.currency).toBe('USD');
 });
 
 test('10 EUR * 2 = 20 EUR', () => {

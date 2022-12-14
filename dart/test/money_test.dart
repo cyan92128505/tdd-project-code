@@ -3,10 +3,11 @@ import 'package:test/test.dart';
 
 void main() {
   test('5 x 2 = 10', () {
-    var fiver = new Dollar(5);
+    var fiver = new Money(5, 'USD');
     var tenner = fiver.times(2);
 
     expect(tenner.amount, 10);
+    expect(tenner.currency, 'USD');
   });
 
 
