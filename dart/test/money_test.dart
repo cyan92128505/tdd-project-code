@@ -1,4 +1,5 @@
 import 'package:money/money.dart';
+import 'package:money/portfolio.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -21,5 +22,17 @@ void main() {
     var expected = Money(1000.5, 'KRW');
 
     expect(expected, actual.divide(4));
+  });
+
+  test('10 USD + 5 USD = 15 USD', () {
+    var fiveDollars = Money(5, "USD");
+    var tenDollars = Money(10, "USD");
+    var fifteenDollars = Money(15, "USD");
+
+    var portfolio = Portfolio();
+    portfolio.add(fiveDollars);
+    portfolio.add(tenDollars);
+
+    expect(fifteenDollars, portfolio.evaluate("USD"));
   });
 }

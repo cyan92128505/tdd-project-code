@@ -1,6 +1,7 @@
 import unittest
 
 from money import Money
+from money import Portfolio
 
 
 class TestMoney(unittest.TestCase):
@@ -20,6 +21,15 @@ class TestMoney(unittest.TestCase):
         expectedMoneyAfterDivision = Money(1000.5, 'KRW')
         self.assertEqual(expectedMoneyAfterDivision,
                          actualMoneyAfterDivision)
+
+    def testAddition(self):
+        fiveDollars = Money(5, "USD")
+        tenDollars = Money(10, "USD")
+        fifteenDollars = Money(15, "USD")
+        portfolio = Portfolio()
+        portfolio.add(fiveDollars)
+        portfolio.add(tenDollars)
+        self.assertEqual(fifteenDollars, portfolio.evaluate("USD"))
 
 
 if __name__ == '__main__':
