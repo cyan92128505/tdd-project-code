@@ -4,27 +4,23 @@ import {
 
 test('5 x 2 = 10', () => {
 
-    const fiver = new Money(5, 'USD');
-    const tenner = fiver.times(2);
+    const actual = new Money(5, 'USD');
+    const expected = new Money(10, 'USD');
 
-    expect(tenner.amount).toBe(10);
-    expect(tenner.currency).toBe('USD');
+    expect(actual.times(2)).toEqual(expected);
 });
 
 test('10 EUR * 2 = 20 EUR', () => {
 
-    const tenEuros = new Money(10, 'EUR');
-    const twentyEuros = tenEuros.times(2);
+    const actual = new Money(10, 'EUR');
+    const expected = new Money(20, 'EUR');
 
-    expect(twentyEuros.amount).toBe(20);
-    expect(twentyEuros.currency).toBe('EUR');
+    expect(actual.times(2)).toEqual(expected);
 })
 
 test('4002 KRW / 4 = 1000.5 KRW', () => {
-    const originMoney = new Money(4002, 'KRW');
+    const actual = new Money(4002, 'KRW');
+    const expected = new Money(1000.5, 'KRW');
 
-    const actualMoneyAfterDivision = originMoney.divide(4);
-    const expectedMoneyAfterDivision = new Money(1000.5, 'KRW');
-
-    expect(actualMoneyAfterDivision).toEqual(expectedMoneyAfterDivision);
+    expect(actual.divide(4)).toEqual(expected);
 })

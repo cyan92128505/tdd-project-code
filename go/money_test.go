@@ -5,37 +5,38 @@ import (
 )
 
 func TestMultiplicationInDollars(t *testing.T) {
-	fiver := Money{
+	actual := Money{
 		amount:   5,
 		currency: "USD",
 	}
 
-	actualResult := fiver.Times(2)
-	expectedResult := Money{amount: 10, currency: "USD"}
+	actualResult := actual.Times(2)
 
-	if expectedResult != actualResult {
-		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
+	expected := Money{amount: 10, currency: "USD"}
+
+	if expected != actualResult {
+		t.Errorf("Expected [%+v], got [%+v]", expected, actualResult)
 	}
 }
 
 func TestMultiplicationInEuros(t *testing.T) {
-	tenEuros := Money{amount: 10, currency: "EUR"}
+	actual := Money{amount: 10, currency: "EUR"}
 
-	actualResult := tenEuros.Times(2)
-	expectedResult := Money{amount: 20, currency: "EUR"}
+	actualResult := actual.Times(2)
+	expected := Money{amount: 20, currency: "EUR"}
 
-	if expectedResult != actualResult {
-		t.Errorf("Expected [%+v], got [%+v]", expectedResult, actualResult)
+	if expected != actualResult {
+		t.Errorf("Expected [%+v], got [%+v]", expected, actualResult)
 	}
 }
 
 func TestDivision(t *testing.T) {
-	originMoney := Money{amount: 4002, currency: "KRW"}
+	actual := Money{amount: 4002, currency: "KRW"}
 
-	actualMoneyAfterDivision := originMoney.Divide(4)
-	expectedMoneyAfterDivision := Money{amount: 1000.5, currency: "KRW"}
+	actualResult := actual.Divide(4)
+	expected := Money{amount: 1000.5, currency: "KRW"}
 
-	if expectedMoneyAfterDivision != actualMoneyAfterDivision {
-		t.Errorf("Expected %+v Got %+v", expectedMoneyAfterDivision, actualMoneyAfterDivision)
+	if expected != actualResult {
+		t.Errorf("Expected %+v Got %+v", expected, actualResult)
 	}
 }

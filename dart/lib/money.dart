@@ -11,4 +11,14 @@ class Money {
   Money divide(double divisor) {
     return Money(amount / divisor, currency);
   }
+
+  @override
+  bool operator ==(other) {
+    return (other is Money) &&
+        other.amount == amount &&
+        other.currency == currency;
+  }
+
+  @override
+  int get hashCode => amount.hashCode ^ currency.hashCode;
 }

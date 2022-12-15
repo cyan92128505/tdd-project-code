@@ -3,29 +3,23 @@ import 'package:test/test.dart';
 
 void main() {
   test('5 x 2 = 10', () {
-    var fiver = Money(5, 'USD');
-    var tenner = fiver.times(2);
+    var actual = Money(5, 'USD');
+    var expected = Money(10, 'USD');
 
-    expect(tenner.amount, 10);
-    expect(tenner.currency, 'USD');
+    expect(expected, actual.times(2));
   });
 
   test('10 EUR x 2 = 20 EUR', () {
-    var tenEUR = Money(10, 'EUR');
-    var twentyEUR = tenEUR.times(2);
+    var actual = Money(10, 'EUR');
+    var expected = Money(20, 'EUR');
 
-    expect(twentyEUR.amount, 20);
-    expect(twentyEUR.currency, 'EUR');
+    expect(expected, actual.times(2));
   });
 
   test('4002 KRW / 4 = 1000.5 KRW', () {
-    var originMoney = Money(4002, 'KRW');
+    var actual = Money(4002, 'KRW');
+    var expected = Money(1000.5, 'KRW');
 
-    var actualMoneyAfterDivision = originMoney.divide(4);
-    var expectedMoneyAfterDivision = Money(1000.5, 'KRW');
-
-    expect(expectedMoneyAfterDivision.amount, actualMoneyAfterDivision.amount);
-    expect(
-        expectedMoneyAfterDivision.currency, actualMoneyAfterDivision.currency);
+    expect(expected, actual.divide(4));
   });
 }
