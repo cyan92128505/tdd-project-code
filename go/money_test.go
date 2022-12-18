@@ -9,7 +9,7 @@ import (
 
 var bank s.Bank
 
-func init() {
+func initExchangeRates() {
 	bank = s.NewBank()
 	bank.AddExchangeRate("EUR", "USD", 1.2)
 	bank.AddExchangeRate("USD", "KRW", 1100)
@@ -39,6 +39,7 @@ func TestDivision(t *testing.T) {
 }
 
 func TestAddition(t *testing.T) {
+	initExchangeRates()
 	var portfolio s.Portfolio
 	var portfolioInDollars *s.Money
 
@@ -54,6 +55,7 @@ func TestAddition(t *testing.T) {
 }
 
 func TestAddtionOfDollarsAndEuros(t *testing.T) {
+	initExchangeRates()
 	var portfolio s.Portfolio
 
 	fiveDollars := s.NewMoney(5, "USD")
@@ -69,6 +71,7 @@ func TestAddtionOfDollarsAndEuros(t *testing.T) {
 }
 
 func TestAddtionOfDollarsAndWons(t *testing.T) {
+	initExchangeRates()
 	var portfolio s.Portfolio
 
 	oneDollars := s.NewMoney(1, "USD")
@@ -84,6 +87,7 @@ func TestAddtionOfDollarsAndWons(t *testing.T) {
 }
 
 func TestAdditionWithMultipleMissingExchangeRates(t *testing.T) {
+	initExchangeRates()
 	var portfolio s.Portfolio
 
 	oneDollars := s.NewMoney(1, "USD")

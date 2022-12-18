@@ -3,12 +3,13 @@ import Money from "./money";
 import Portfolio from "./portfolio";
 
 describe('TDD', () => {
-    const testBank = new Bank();
+    let testBank = new Bank();
 
-    beforeAll(() => {
+    const setupTestBank = () => {
+        testBank = new Bank();
         testBank.addExchangeRate("EUR", "USD", 1.2);
         testBank.addExchangeRate("USD", "KRW", 1100);
-    });
+    };
 
     test('TestMultiplication', () => {
         const actual = new Money(5, 'USD');
@@ -26,6 +27,8 @@ describe('TDD', () => {
     });
 
     test('TestAddtion', () => {
+        setupTestBank();
+
         const portfolio = new Portfolio();
 
         const fiveDollars = new Money(5, "USD");
@@ -41,6 +44,8 @@ describe('TDD', () => {
     });
 
     test('TestAddtionOfDollarsAndEuros', () => {
+        setupTestBank();
+
         const portfolio = new Portfolio();
 
         const fiveDollars = new Money(5, "USD");
@@ -56,6 +61,8 @@ describe('TDD', () => {
     });
 
     test('TestAddtionOfDollarsAndWons', () => {
+        setupTestBank();
+
         const portfolio = new Portfolio();
 
         const oneDollars = new Money(1, "USD");
@@ -71,6 +78,8 @@ describe('TDD', () => {
     });
 
     test('TestAdditionWithMultipleMissingExchangeRates', () => {
+        setupTestBank();
+
         const expected = new Error("Missing exchange rate(s):[USD->Kalganid,EUR->Kalganid,KRW->Kalganid]");
         expect(() => {
             const portfolio = new Portfolio();

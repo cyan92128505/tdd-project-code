@@ -4,10 +4,14 @@ import 'package:money/portfolio.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final testBank = Bank();
+  var testBank = Bank();
 
-  testBank.addExchangeRate('EUR', 'USD', 1.2);
-  testBank.addExchangeRate('USD', 'KRW', 1100);
+  void setupTestBank() {
+    testBank = Bank();
+
+    testBank.addExchangeRate('EUR', 'USD', 1.2);
+    testBank.addExchangeRate('USD', 'KRW', 1100);
+  }
 
   test('Test Multiplication: 5 x 2 = 10', () {
     var actual = Money(5, 'USD');
@@ -24,6 +28,7 @@ void main() {
   });
 
   test('Test Addtion: 10 USD + 5 USD = 15 USD', () {
+    setupTestBank();
     var fiveDollars = Money(5, "USD");
     var tenDollars = Money(10, "USD");
     var fifteenDollars = Money(15, "USD");
@@ -36,6 +41,7 @@ void main() {
   });
 
   test('TestAddtionOfDollarsAndEuros', () {
+    setupTestBank();
     var fiveDollars = Money(5, "USD");
     var tenEuros = Money(10, "EUR");
     var expacted = Money(17, "USD");
@@ -50,6 +56,7 @@ void main() {
   });
 
   test('TestAddtionOfDollarsAndWons', () {
+    setupTestBank();
     var oneDollars = Money(1, "USD");
     var elevenHundredWons = Money(1100, "KRW");
     var expacted = Money(2200, "KRW");
@@ -66,6 +73,7 @@ void main() {
   test('TestAdditionWithMultipleMissingExchangeRates', () {
     expect(
       () {
+        setupTestBank();
         var portfolio = Portfolio();
 
         var oneDollars = Money(1, "USD");
