@@ -1,4 +1,4 @@
-package tdd
+package stocks
 
 type Portfolio []Money
 

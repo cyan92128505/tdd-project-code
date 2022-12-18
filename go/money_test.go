@@ -1,31 +1,18 @@
 package tdd
 
 import (
+	s "tdd/stocks"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMultiplicationInDollars(t *testing.T) {
-	actual := Money{
-		amount:   5,
-		currency: "USD",
-	}
+func TestMultiplication(t *testing.T) {
+	actual := s.NewMoney(5, "USD")
 
 	actualResult := actual.Times(2)
 
-	expected := Money{amount: 10, currency: "USD"}
-
-	if expected != actualResult {
-		t.Errorf("Expected [%+v], got [%+v]", expected, actualResult)
-	}
-}
-
-func TestMultiplicationInEuros(t *testing.T) {
-	actual := Money{amount: 10, currency: "EUR"}
-
-	actualResult := actual.Times(2)
-	expected := Money{amount: 20, currency: "EUR"}
+	expected := s.NewMoney(10, "USD")
 
 	if expected != actualResult {
 		t.Errorf("Expected [%+v], got [%+v]", expected, actualResult)
@@ -33,10 +20,10 @@ func TestMultiplicationInEuros(t *testing.T) {
 }
 
 func TestDivision(t *testing.T) {
-	actual := Money{amount: 4002, currency: "KRW"}
+	actual := s.NewMoney(4002, "KRW")
 
 	actualResult := actual.Divide(4)
-	expected := Money{amount: 1000.5, currency: "KRW"}
+	expected := s.NewMoney(1000.5, "KRW")
 
 	if expected != actualResult {
 		t.Errorf("Expected %+v Got %+v", expected, actualResult)
@@ -44,12 +31,12 @@ func TestDivision(t *testing.T) {
 }
 
 func TestAddition(t *testing.T) {
-	var portfolio Portfolio
-	var portfolioInDollars Money
+	var portfolio s.Portfolio
+	var portfolioInDollars s.Money
 
-	fiveDollars := Money{amount: 5, currency: "USD"}
-	tenDollars := Money{amount: 10, currency: "USD"}
-	fifteenDollars := Money{amount: 15, currency: "USD"}
+	fiveDollars := s.NewMoney(5, "USD")
+	tenDollars := s.NewMoney(10, "USD")
+	fifteenDollars := s.NewMoney(15, "USD")
 
 	portfolio = portfolio.Add(fiveDollars)
 	portfolio = portfolio.Add(tenDollars)
