@@ -1,6 +1,3 @@
-import functools
-import operator
-
 
 class Money:
     def __init__(self, amount, currency) -> None:
@@ -15,16 +12,3 @@ class Money:
 
     def divide(self, divisor):
         return Money(self.amount / divisor, self.currency)
-
-
-class Portfolio:
-    def __init__(self) -> None:
-        self.moneys = []
-
-    def add(self, *moneys):
-        self.moneys.extend(moneys)
-
-    def evaluate(self, currency):
-        total = functools.reduce(operator.add, map(
-            lambda m: m.amount, self.moneys), 0)
-        return Money(total, currency)
