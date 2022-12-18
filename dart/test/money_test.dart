@@ -56,4 +56,24 @@ void main() {
 
     expect(actual, expacted);
   });
+
+  test('TestAdditionWithMultipleMissingExchangeRates', () {
+    expect(() {
+      var portfolio = Portfolio();
+
+      var oneDollars = Money(1, "USD");
+      var oneEuros = Money(1, "EUR");
+      var oneWon = Money(1, "KRW");
+
+      portfolio.add(oneDollars);
+      portfolio.add(oneEuros);
+      portfolio.add(oneWon);
+
+      portfolio.evaluate("Kalganid");
+    },
+        throwsA(predicate((e) =>
+            e is UnsupportedError &&
+            e.message ==
+                'Missing exchange rate(s):[USD->Kalganid,EUR->Kalganid,KRW->Kalganid]')));
+  });
 }

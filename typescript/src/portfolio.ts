@@ -10,9 +10,20 @@ export class Portfolio {
     }
 
     evaluate(currency: string): Money {
-        const total = this.moneys.reduce((sum, money) => sum + this.convert(money, currency), 0);
+        const failures: string[] = [];
+        const total = this.moneys.reduce((sum, money) => {
+            const convertedAmount = this.convert(money, currency);
+            if (convertedAmount === 0) {
+                failures.push(`${money.currency}->${currency}`);
+            }
+            return sum + convertedAmount;
+        }, 0);
 
-        return new Money(total, currency);
+        if (failures.length === 0) {
+            return new Money(total, currency);
+        }
+
+        throw new Error(`Missing exchange rate(s):[${failures.join()}]`)
     }
 
     convert(money: Money, currency: string): number {

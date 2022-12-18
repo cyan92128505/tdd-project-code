@@ -2,18 +2,26 @@ import 'package:money/money.dart';
 
 class Portfolio {
   List<Money> moneys = [];
-  final _eurToUsd = 1.2;
 
   void add(Money money) {
     moneys.add(money);
   }
 
   Money evaluate(String currency) {
-    var total = moneys
-        .map((e) => _convert(e, currency))
-        .reduce((total, amount) => total + amount);
+    List<String> failures = [];
+    var total = moneys.map((e) {
+      var result = _convert(e, currency);
+      if (result == 0) {
+        failures.add('${e.currency}->$currency');
+      }
+      return result;
+    }).reduce((total, amount) => total + amount);
 
-    return Money(total, currency);
+    if (failures.isEmpty) {
+      return Money(total, currency);
+    }
+
+    throw UnsupportedError('Missing exchange rate(s):[${failures.join(',')}]');
   }
 
   double _convert(Money money, String currency) {
