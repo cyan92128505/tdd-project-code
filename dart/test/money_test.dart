@@ -42,4 +42,18 @@ void main() {
 
     expect(actual, expacted);
   });
+
+  test('TestAddtionOfDollarsAndWons', () {
+    var oneDollars = Money(1, "USD");
+    var elevenHundredWons = Money(1100, "KRW");
+    var expacted = Money(2200, "KRW");
+
+    var portfolio = Portfolio();
+    portfolio.add(oneDollars);
+    portfolio.add(elevenHundredWons);
+
+    var actual = portfolio.evaluate("KRW");
+
+    expect(actual, expacted);
+  });
 }

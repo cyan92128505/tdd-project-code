@@ -45,3 +45,18 @@ test('TestAddtionOfDollarsAndEuros', () => {
 
     expect(actual).toEqual(expacted);
 });
+
+test('TestAddtionOfDollarsAndWons', () => {
+    const portfolio = new Portfolio();
+
+    const oneDollars = new Money(1, "USD");
+    const elevenHundredWons = new Money(1100, "KRW");
+
+    portfolio.add(oneDollars);
+    portfolio.add(elevenHundredWons);
+
+    const expacted = new Money(2200, "KRW");
+    const actual = portfolio.evaluate("KRW");
+
+    expect(actual).toEqual(expacted);
+});

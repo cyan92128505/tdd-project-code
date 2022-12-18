@@ -21,6 +21,13 @@ class Portfolio {
       return money.amount;
     }
 
-    return money.amount * _eurToUsd;
+    Map<String, double> exchangeRates = {
+      "EUR->USD": 1.2,
+      "USD->KRW": 1100,
+    };
+    String key = '${money.currency}->$currency';
+    double rate = exchangeRates[key] ?? 0;
+
+    return money.amount * rate;
   }
 }
