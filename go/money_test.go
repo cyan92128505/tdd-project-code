@@ -44,3 +44,18 @@ func TestAddition(t *testing.T) {
 
 	assert.Equal(t, fifteenDollars, portfolioInDollars, "5 USD Add 10 USD Equal 15 USD")
 }
+
+func TestAddtionOfDollarsAndEuros(t *testing.T) {
+	var portfolio s.Portfolio
+
+	fiveDollars := s.NewMoney(5, "USD")
+	tenEuros := s.NewMoney(10, "EUR")
+
+	portfolio = portfolio.Add(fiveDollars)
+	portfolio = portfolio.Add(tenEuros)
+
+	expected := s.NewMoney(17, "USD")
+	actual := portfolio.Evaluate("USD")
+
+	assert.Equal(t, expected, actual)
+}

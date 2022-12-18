@@ -10,9 +10,19 @@ export class Portfolio {
     }
 
     evaluate(currency: string): Money {
-        const total = this.moneys.reduce((sum, money) => sum + money.amount, 0);
+        const total = this.moneys.reduce((sum, money) => sum + this.convert(money, currency), 0);
 
         return new Money(total, currency);
+    }
+
+    convert(money: Money, currency: string): number {
+        const eurToUsd = 1.2;
+
+        if (money.currency === currency) {
+            return money.amount;
+        }
+
+        return money.amount * eurToUsd;
     }
 }
 

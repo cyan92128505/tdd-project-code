@@ -28,4 +28,18 @@ void main() {
 
     expect(fifteenDollars, portfolio.evaluate("USD"));
   });
+
+  test('TestAddtionOfDollarsAndEuros', () {
+    var fiveDollars = Money(5, "USD");
+    var tenEuros = Money(10, "EUR");
+    var expacted = Money(17, "USD");
+
+    var portfolio = Portfolio();
+    portfolio.add(fiveDollars);
+    portfolio.add(tenEuros);
+
+    var actual = portfolio.evaluate("USD");
+
+    expect(actual, expacted);
+  });
 }

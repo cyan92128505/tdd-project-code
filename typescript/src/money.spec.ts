@@ -14,17 +14,34 @@ test('TestDivision', () => {
     const expected = new Money(1000.5, 'KRW');
 
     expect(actual.divide(4)).toEqual(expected);
-})
+});
 
 test('TestAddtion', () => {
     const portfolio = new Portfolio();
 
     const fiveDollars = new Money(5, "USD");
     const tenDollars = new Money(10, "USD");
-    const fifteenDollars = new Money(15, "USD");
 
     portfolio.add(fiveDollars);
     portfolio.add(tenDollars);
 
-    expect(portfolio.evaluate("USD")).toEqual(fifteenDollars);
-})
+    const expacted = new Money(15, "USD");
+    const actual = portfolio.evaluate("USD");
+
+    expect(actual).toEqual(expacted);
+});
+
+test('TestAddtionOfDollarsAndEuros', () => {
+    const portfolio = new Portfolio();
+
+    const fiveDollars = new Money(5, "USD");
+    const tenEuros = new Money(10, "EUR");
+
+    portfolio.add(fiveDollars);
+    portfolio.add(tenEuros);
+
+    const expacted = new Money(17, "USD");
+    const actual = portfolio.evaluate("USD");
+
+    expect(actual).toEqual(expacted);
+});
