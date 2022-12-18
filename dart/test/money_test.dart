@@ -1,8 +1,14 @@
+import 'package:money/bank.dart';
 import 'package:money/money.dart';
 import 'package:money/portfolio.dart';
 import 'package:test/test.dart';
 
 void main() {
+  final testBank = Bank();
+
+  testBank.addExchangeRate('EUR', 'USD', 1.2);
+  testBank.addExchangeRate('USD', 'KRW', 1100);
+
   test('Test Multiplication: 5 x 2 = 10', () {
     var actual = Money(5, 'USD');
     var expected = Money(10, 'USD');
@@ -26,7 +32,7 @@ void main() {
     portfolio.add(fiveDollars);
     portfolio.add(tenDollars);
 
-    expect(fifteenDollars, portfolio.evaluate("USD"));
+    expect(fifteenDollars, portfolio.evaluate(testBank, "USD"));
   });
 
   test('TestAddtionOfDollarsAndEuros', () {
@@ -38,7 +44,7 @@ void main() {
     portfolio.add(fiveDollars);
     portfolio.add(tenEuros);
 
-    var actual = portfolio.evaluate("USD");
+    var actual = portfolio.evaluate(testBank, "USD");
 
     expect(actual, expacted);
   });
@@ -52,28 +58,56 @@ void main() {
     portfolio.add(oneDollars);
     portfolio.add(elevenHundredWons);
 
-    var actual = portfolio.evaluate("KRW");
+    var actual = portfolio.evaluate(testBank, "KRW");
 
     expect(actual, expacted);
   });
 
   test('TestAdditionWithMultipleMissingExchangeRates', () {
-    expect(() {
-      var portfolio = Portfolio();
+    expect(
+      () {
+        var portfolio = Portfolio();
 
-      var oneDollars = Money(1, "USD");
-      var oneEuros = Money(1, "EUR");
-      var oneWon = Money(1, "KRW");
+        var oneDollars = Money(1, "USD");
+        var oneEuros = Money(1, "EUR");
+        var oneWon = Money(1, "KRW");
 
-      portfolio.add(oneDollars);
-      portfolio.add(oneEuros);
-      portfolio.add(oneWon);
+        portfolio.add(oneDollars);
+        portfolio.add(oneEuros);
+        portfolio.add(oneWon);
 
-      portfolio.evaluate("Kalganid");
-    },
-        throwsA(predicate((e) =>
+        portfolio.evaluate(testBank, "Kalganid");
+      },
+      throwsA(
+        predicate((e) =>
             e is UnsupportedError &&
             e.message ==
-                'Missing exchange rate(s):[USD->Kalganid,EUR->Kalganid,KRW->Kalganid]')));
+                'Missing exchange rate(s):[USD->Kalganid,EUR->Kalganid,KRW->Kalganid]'),
+      ),
+    );
+  });
+
+  test('TestConversion', () {
+    var bank = Bank();
+    bank.addExchangeRate("EUR", "USD", 1.2);
+    var tenEuros = Money(10, "EUR");
+    var actual = bank.convert(tenEuros, "USD");
+    var expacted = Money(12, "USD");
+
+    expect(actual, expacted);
+  });
+
+  test('TestConversionMissingExchangeRate', () {
+    var bank = Bank();
+    var tenEuros = Money(10, "EUR");
+
+    expect(
+      () {
+        bank.convert(tenEuros, "Kalganid");
+      },
+      throwsA(
+        predicate((e) => e is UnsupportedError && e.message == "EUR->Kalganid"),
+      ),
+    );
   });
 }

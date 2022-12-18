@@ -1,5 +1,7 @@
 import 'package:money/money.dart';
 
+import 'bank.dart';
+
 class Portfolio {
   List<Money> moneys = [];
 
@@ -7,35 +9,27 @@ class Portfolio {
     moneys.add(money);
   }
 
-  Money evaluate(String currency) {
+  Money evaluate(Bank bank, String currency) {
     List<String> failures = [];
-    var total = moneys.map((e) {
-      var result = _convert(e, currency);
-      if (result == 0) {
-        failures.add('${e.currency}->$currency');
+    var total = moneys.map((m) {
+      try {
+        var result = bank.convert(m, currency);
+        return result?.amount;
+      } catch (e) {
+        failures.add('${m.currency}->$currency');
       }
-      return result;
-    }).reduce((total, amount) => total + amount);
+    }).reduce(
+      (total, amount) {
+        final tempTotal = total ?? 0;
+        final tempAmount = amount ?? 0;
+        return tempTotal + tempAmount;
+      },
+    );
 
     if (failures.isEmpty) {
-      return Money(total, currency);
+      return Money(total!, currency);
     }
 
     throw UnsupportedError('Missing exchange rate(s):[${failures.join(',')}]');
-  }
-
-  double _convert(Money money, String currency) {
-    if (money.currency == currency) {
-      return money.amount;
-    }
-
-    Map<String, double> exchangeRates = {
-      "EUR->USD": 1.2,
-      "USD->KRW": 1100,
-    };
-    String key = '${money.currency}->$currency';
-    double rate = exchangeRates[key] ?? 0;
-
-    return money.amount * rate;
   }
 }

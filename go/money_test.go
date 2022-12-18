@@ -7,6 +7,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var bank s.Bank
+
+func init() {
+	bank = s.NewBank()
+	bank.AddExchangeRate("EUR", "USD", 1.2)
+	bank.AddExchangeRate("USD", "KRW", 1100)
+}
+
 func TestMultiplication(t *testing.T) {
 	actual := s.NewMoney(5, "USD")
 
@@ -32,7 +40,7 @@ func TestDivision(t *testing.T) {
 
 func TestAddition(t *testing.T) {
 	var portfolio s.Portfolio
-	var portfolioInDollars s.Money
+	var portfolioInDollars *s.Money
 
 	fiveDollars := s.NewMoney(5, "USD")
 	tenDollars := s.NewMoney(10, "USD")
@@ -40,9 +48,9 @@ func TestAddition(t *testing.T) {
 
 	portfolio = portfolio.Add(fiveDollars)
 	portfolio = portfolio.Add(tenDollars)
-	portfolioInDollars, _ = portfolio.Evaluate("USD")
+	portfolioInDollars, _ = portfolio.Evaluate(bank, "USD")
 
-	assert.Equal(t, fifteenDollars, portfolioInDollars, "5 USD Add 10 USD Equal 15 USD")
+	assert.Equal(t, fifteenDollars, *portfolioInDollars, "5 USD Add 10 USD Equal 15 USD")
 }
 
 func TestAddtionOfDollarsAndEuros(t *testing.T) {
@@ -55,9 +63,9 @@ func TestAddtionOfDollarsAndEuros(t *testing.T) {
 	portfolio = portfolio.Add(tenEuros)
 
 	expected := s.NewMoney(17, "USD")
-	actual, _ := portfolio.Evaluate("USD")
+	actual, _ := portfolio.Evaluate(bank, "USD")
 
-	assert.Equal(t, expected, actual)
+	assert.Equal(t, expected, *actual)
 }
 
 func TestAddtionOfDollarsAndWons(t *testing.T) {
@@ -70,9 +78,9 @@ func TestAddtionOfDollarsAndWons(t *testing.T) {
 	portfolio = portfolio.Add(elevenHundredWons)
 
 	expected := s.NewMoney(2200, "KRW")
-	actual, _ := portfolio.Evaluate("KRW")
+	actual, _ := portfolio.Evaluate(bank, "KRW")
 
-	assert.Equal(t, expected, actual)
+	assert.Equal(t, expected, *actual)
 }
 
 func TestAdditionWithMultipleMissingExchangeRates(t *testing.T) {
@@ -87,8 +95,30 @@ func TestAdditionWithMultipleMissingExchangeRates(t *testing.T) {
 	portfolio = portfolio.Add(oneWon)
 
 	expected := "Missing exchange rate(s):[USD->Kalganid,EUR->Kalganid,KRW->Kalganid,]"
-	_, actualError := portfolio.Evaluate("Kalganid")
+	_, actualError := portfolio.Evaluate(bank, "Kalganid")
 	actual := actualError.Error()
 
 	assert.Equal(t, expected, actual)
+}
+
+func TestConversion(t *testing.T) {
+	bank := s.NewBank()
+	bank.AddExchangeRate("EUR", "USD", 1.2)
+	tenEuros := s.NewMoney(10, "EUR")
+	expected := s.NewMoney(12, "USD")
+
+	actual, err := bank.Convert(tenEuros, "USD")
+	assert.Nil(t, err)
+	assert.Equal(t, expected, *actual)
+}
+
+func TestConcversionWithMissingExchangeRate(t *testing.T) {
+	bank := s.NewBank()
+	tenEuros := s.NewMoney(10, "EUR")
+	actual, err := bank.Convert(tenEuros, "Kalganid")
+	if actual != nil {
+		t.Errorf("Expected Money to be nil, found: [%+v]", actual)
+	}
+
+	assert.Equal(t, "EUR->Kalganid", err.Error())
 }

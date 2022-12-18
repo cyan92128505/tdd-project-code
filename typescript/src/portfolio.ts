@@ -1,3 +1,4 @@
+import { Bank } from "./bank";
 import Money from "./money";
 
 
@@ -9,14 +10,16 @@ export class Portfolio {
         return this;
     }
 
-    evaluate(currency: string): Money {
+    evaluate(bank: Bank, currency: string): Money {
         const failures: string[] = [];
         const total = this.moneys.reduce((sum, money) => {
-            const convertedAmount = this.convert(money, currency);
-            if (convertedAmount === 0) {
+            try {
+                const convertedMoney = bank.convert(money, currency);
+                return sum + convertedMoney.amount;
+            } catch (error) {
                 failures.push(`${money.currency}->${currency}`);
+                return sum;
             }
-            return sum + convertedAmount;
         }, 0);
 
         if (failures.length === 0) {
@@ -24,21 +27,6 @@ export class Portfolio {
         }
 
         throw new Error(`Missing exchange rate(s):[${failures.join()}]`)
-    }
-
-    convert(money: Money, currency: string): number {
-        const exchangeRates = new Map();
-        exchangeRates.set("EUR->USD", 1.2);
-        exchangeRates.set("USD->KRW", 1100);
-
-        if (money.currency === currency) {
-            return money.amount;
-        }
-
-        const key = `${money.currency}->${currency}`
-        const rate = exchangeRates.get(key) || 0;
-
-        return money.amount * rate;
     }
 }
 
